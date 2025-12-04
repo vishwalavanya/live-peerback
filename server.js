@@ -33,7 +33,7 @@ app.get("/start-webrtc", async (req, res) => {
   }
 });
 
-// STEP 2 → Send the browser's SDP offer to Livepeer
+// STEP 2 → Send browser SDP → Livepeer
 app.post("/broadcast-sdp", async (req, res) => {
   try {
     const { sdpUrl, offerSdp } = req.body;
@@ -49,15 +49,17 @@ app.post("/broadcast-sdp", async (req, res) => {
     const answerSdp = await r.text();
     res.json({ answerSdp });
   } catch (err) {
-    console.error(err);
+    console.error("SDP ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
+// Default
 app.get("/", (req, res) => {
   res.send("Livepeer WebRTC backend running 🚀");
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log("Server running on port", PORT));
+
 
